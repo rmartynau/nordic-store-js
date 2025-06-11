@@ -1,0 +1,13 @@
+<label>
+  {{#if label}}
+    <p class="text-base font-medium mb-2">{{label}}</p>
+  {{/if}}
+  <input
+    name="{{name}}"
+    type="{{type}}"
+    value="{{value}}"
+    placeholder="{{placeholder}}"
+    class="text-base border ${props.error ? 'border-red-500' : 'border-slate-200'} rounded hover:border-slate-400 focus:border-slate-500 outline-none p-1 block w-full
+      {{className}}"
+  />
+</label>

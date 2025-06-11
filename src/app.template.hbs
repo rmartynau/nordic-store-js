@@ -1,0 +1,38 @@
+<ui-loader loading="{{ isLoading }}" class-name="z-10 bg-white"></ui-loader>
+<div>
+    <app-router>
+        <app-route 
+         path="${props.routes.home}"
+         title="NORDICS" 
+         component="home-page">
+        </app-route>
+        <app-route
+         path="${props.routes.singIn}"
+         title="Sign In"
+         component="sign-in-page">
+        </app-route>
+        <app-route
+         path="${props.routes.singUp}"
+         title="Sign Up"
+         component="sign-up-page">
+        </app-route>
+        <app-route
+         path="${props.routes.cart}"
+         title="My Cart"
+         component="cart-page">
+        </app-route>
+        <app-route
+         path="${props.routes.notFound}"
+         title="404 | Not Found"
+         component="not-found">
+        </app-route>
+        <app-route 
+         path="${props.routes.logOut}"
+         title="logout" 
+         component="logout-page">
+        </app-route>
+        <app-outlet></app-outlet>
+    </app-router>
+</div>
+
+<ui-toast></ui-toast>
