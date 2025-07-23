@@ -40,6 +40,7 @@ export class CartPage extends Component {
     const cartBtnDelete = target.closest(".clear");
     if (cartBtnDelete) {
       let id = target.parentElement.parentElement.dataset.id;
+      console.log(id);
       await apiService.delete(`/order/${id}`);
       const { data } = await apiService.get("/order");
       const result = mapResponseApiData(data ?? {});

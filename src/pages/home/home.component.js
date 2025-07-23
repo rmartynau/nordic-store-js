@@ -71,18 +71,17 @@ export class HomePage extends Component {
   };
 
   addToCard = (e) => {
-    if (e.target.closest('.add-to-cart')) {
-      let id = e.target.parentElement.dataset.id;
+    if (e.target.closest(".add-to-cart")) {
       let price = e.target.parentElement.parentElement.dataset.price;
       let name = e.target.parentElement.parentElement.parentElement.dataset.name;
       let img = e.target.parentElement.parentElement.parentElement.dataset.img;
-    
-      const cartItems = { id, price, name, img };
-      apiService.post('/order', cartItems).then(() => {
+      
+      const cartItems = { price, name, img };
+      apiService.post("/order", cartItems).then(() => {
         console.log(cartItems);
         this.setState({
           ...this.state,
-          orderCart: this.state.orderCart.concat(cartItems),
+          orderCart: this.state.orderCart?.concat(cartItems),
         });
       })
       useToastNotification({
@@ -128,7 +127,8 @@ export class HomePage extends Component {
 
   componentWillUnmount() {
     this.removeEventListener("click", this.addToCard);
+    this.getProducts();
   }
 }
 
-customElements.define('home-page', HomePage)
+customElements.define('home-page', HomePage);
