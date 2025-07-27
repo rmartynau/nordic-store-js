@@ -2,6 +2,7 @@ import { Component } from '../../core/Component';
 import template from './home.template.hbs';
 import { ROUTES } from '../../constants/routes';
 import { apiService } from '../../services/Api';
+// import { useCartStorage } from "../../hooks/useCartStorage";
 
 import "../../components/router-link/router-link.component";
 
@@ -70,6 +71,36 @@ export class HomePage extends Component {
     })
   };
 
+//   addToCard = (e) => {
+//   const addToCartButton = e.target.closest('.add-to-cart');
+//   if (!addToCartButton) return;
+
+//   // Use `closest()` to find the wrapping element that contains all the data
+//   const productElement = addToCartButton.closest('[data-img][data-name][data-price]');
+//   if (!productElement) {
+//     console.warn('Product element not found for clicked button.');
+//     return;
+//   }
+
+//   const price = productElement.dataset.price;
+//   const name = productElement.dataset.name;
+//   const img = productElement.dataset.img;
+
+//   const cartItems = { price, name, img };
+
+//   apiService.post('/order', cartItems).then(() => {
+//     this.setState({
+//       ...this.state,
+//       orderCart: this.state.orderCart?.concat(cartItems),
+//     });
+//     console.log(cartItems);
+//   });
+//   useToastNotification({
+//     message: "Product in the cart!",
+//     type: TOAST_TYPE.success,
+//   });
+// };
+
   addToCard = (e) => {
     if (e.target.closest(".add-to-cart")) {
       let price = e.target.parentElement.parentElement.dataset.price;
@@ -78,7 +109,6 @@ export class HomePage extends Component {
       
       const cartItems = { price, name, img };
       apiService.post("/order", cartItems).then(() => {
-        console.log(cartItems);
         this.setState({
           ...this.state,
           orderCart: this.state.orderCart?.concat(cartItems),
@@ -90,25 +120,6 @@ export class HomePage extends Component {
       });
     }
   };
-
-  // onClick = ({ target }) => {
-  //   const productCartBtn = target.closest(".add-to-cart");
-
-  //   if (productCartBtn) {
-	// 		const { product } = this.state;
-  //     const { setItem } = useCartStorage();
-  //     setItem(product.id, {
-  //       id: product.id,
-  //       name: product.name,
-  //       price: product.price,
-	// 			image: product.image,
-  //     });
-	// 		useToastNotification({
-	// 			type: TOAST_TYPE.success,
-	// 			message: 'Product In Cart!'
-	// 		});
-  //   }
-  // };
 
   setUser() {
     const { getUser } = useUserStore();
