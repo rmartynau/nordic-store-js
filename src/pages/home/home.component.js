@@ -103,12 +103,15 @@ export class HomePage extends Component {
 
   addToCard = (e) => {
     if (e.target.closest(".add-to-cart")) {
+      let id = e.target.parentElement.parentElement.dataset.id;
       let price = e.target.parentElement.parentElement.dataset.price;
       let name = e.target.parentElement.parentElement.parentElement.dataset.name;
       let img = e.target.parentElement.parentElement.parentElement.dataset.img;
       
       const cartItems = { price, name, img };
+
       apiService.post("/order", cartItems).then(() => {
+        console.log(id, cartItems);
         this.setState({
           ...this.state,
           orderCart: this.state.orderCart?.concat(cartItems),
@@ -119,6 +122,10 @@ export class HomePage extends Component {
         type: TOAST_TYPE.success,
       });
     }
+      // useToastNotification({
+      //   message: "This product is already in the cart :)",
+      //   type: TOAST_TYPE.info,
+      // });
   };
 
   setUser() {

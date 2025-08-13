@@ -25,21 +25,10 @@ export class CartPage extends Component {
     });
   };
 
-  // getProducts = () => {
-  //   apiService
-  //   .get("/order")
-  //   .then(({ data }) => {
-  //     this.setState({
-  //       ...this.state,
-  //       data: mapResponseApiData(data),
-  //     });
-  //   })
-  // };
-
   deleteItem = async ({ target }) => {
     const cartBtnDelete = target.closest(".clear");
     if (cartBtnDelete) {
-      let id = target.parentElement.parentElement.dataset.id;
+      let id = target.dataset.id;
       console.log(id);
       await apiService.delete(`/order/${id}`);
       const { data } = await apiService.get("/order");
@@ -62,6 +51,8 @@ export class CartPage extends Component {
   //           cart: data,
   //           user: getUser()
   //         });
+  //       }).finally(() => {
+  //         this.toggleIsLoading()
   //       })
   //     });
   //   }
@@ -104,11 +95,12 @@ export class CartPage extends Component {
     this.init();
     // this.getProducts();
     this.addEventListener("click", this.deleteItem);
+    // this.addEventListener("click", this.onClick);
   }
 
   componentWillUnmount() {
-    this.init();
     this.removeEventListener("click", this.deleteItem);
+    // this.removeEventListener("click", this.onClick);
   }
 }
 

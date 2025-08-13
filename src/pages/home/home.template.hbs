@@ -124,7 +124,7 @@ Alternatively if you want to just have a single hero
         </nav>
 
         {{#each products}}
-          <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col" data-id="{{this.id}}">
+          <div data-id="{{this.id}}" class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
             
             <div
               data-img="{{this.img}}"
@@ -134,12 +134,14 @@ Alternatively if you want to just have a single hero
               <img class="hover:grow hover:shadow-lg" src="{{this.img}}" alt="product" />
               <p data-name="{{this.name}}">{{this.name}}</p>
               <div 
+                data-id="{{this.id}}"
                 data-img="{{this.img}}" 
                 data-name="{{this.name}}"
                 data-price="{{this.price}}" class="pt-3 flex items-center justify-between">
                 <p data-price="{{this.price}}" class="pt-1 text-gray-900">{{this.price}}</p>
 
                 <button
+                 data-id="{{this.id}}"
                  data-img="{{this.img}}" 
                  data-name="{{this.name}}"
                  data-price="{{this.price}}"
