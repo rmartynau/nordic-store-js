@@ -30,6 +30,7 @@ export class HomePage extends Component {
 
       products: [],
       orderCart: [],
+      data: [],
       isLoading: false,
       user: null,
     };
@@ -71,63 +72,84 @@ export class HomePage extends Component {
     })
   };
 
-//   addToCard = (e) => {
-//   const addToCartButton = e.target.closest('.add-to-cart');
-//   if (!addToCartButton) return;
+  addToCard = async ({ target }) => {
 
-//   // Use `closest()` to find the wrapping element that contains all the data
-//   const productElement = addToCartButton.closest('[data-img][data-name][data-price]');
-//   if (!productElement) {
-//     console.warn('Product element not found for clicked button.');
-//     return;
-//   }
-
-//   const price = productElement.dataset.price;
-//   const name = productElement.dataset.name;
-//   const img = productElement.dataset.img;
-
-//   const cartItems = { price, name, img };
-
-//   apiService.post('/order', cartItems).then(() => {
-//     this.setState({
-//       ...this.state,
-//       orderCart: this.state.orderCart?.concat(cartItems),
-//     });
-//     console.log(cartItems);
-//   });
-//   useToastNotification({
-//     message: "Product in the cart!",
-//     type: TOAST_TYPE.success,
-//   });
-// };
-
-  addToCard = (e) => {
-    if (e.target.closest(".add-to-cart")) {
-      let id = e.target.parentElement.parentElement.dataset.id;
-      let price = e.target.parentElement.parentElement.dataset.price;
-      let name = e.target.parentElement.parentElement.parentElement.dataset.name;
-      let img = e.target.parentElement.parentElement.parentElement.dataset.img;
+    const addToCardBtn = target.closest(".add-to-cart");
+    
+    // let id = target.parentElement.parentElement.dataset.id;
+    let price = target.parentElement.parentElement.dataset.price;
+    let name = target.parentElement.parentElement.parentElement.dataset.name;
+    let img = target.parentElement.parentElement.parentElement.dataset.img;
       
-      const cartItems = { price, name, img };
-
-      apiService.post("/order", cartItems).then(() => {
-        console.log(id, cartItems);
-        this.setState({
-          ...this.state,
-          orderCart: this.state.orderCart?.concat(cartItems),
-        });
+    const cartItems = { price, name, img };
+    if (addToCardBtn) {
+      // let id = target.parentElement.parentElement.dataset.id;
+      // let id = target.dataset.id;
+      await apiService.post("/order", cartItems);
+      const { data } = await apiService.get("/order");
+      const result = mapResponseApiData(data ?? {});
+      this.setState({
+        ...this.state,
+        orderCart: this.state.orderCart?.concat(cartItems),
+        data: result,
       })
+    
+      console.log(data);
+      
+      // await apiService.post("/order", cartItems).then(() => {
+      //   this.setState({
+      //    ...this.state,
+      //    orderCart: this.state.orderCart?.concat(cartItems),
+      //   })
+      //   console.log(this.state.orderCart);
+      // })
+      
       useToastNotification({
         message: "Product in the cart!",
         type: TOAST_TYPE.success,
       });
     }
-      // useToastNotification({
-      //   message: "This product is already in the cart :)",
-      //   type: TOAST_TYPE.info,
-      // });
   };
 
+  async init() {
+    try {
+      const { getUser } = useUserStore();
+      const { data } = (await apiService.get("/order"));
+      const result = mapResponseApiData(data);
+      this.setState({
+        ...this.state,
+        user: getUser(),
+        data: result,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // addToCard = (e) => {
+  //   if (e.target.closest(".add-to-cart")) {
+      
+  //     let id = e.target.parentElement.parentElement.dataset.id;
+  //     let price = e.target.parentElement.parentElement.dataset.price;
+  //     let name = e.target.parentElement.parentElement.parentElement.dataset.name;
+  //     let img = e.target.parentElement.parentElement.parentElement.dataset.img;
+      
+  //     const cartItems = { price, name, img };
+
+  //    apiService.post("/order", cartItems).then(() => {
+  //       this.setState({
+  //        ...this.state,
+  //        orderCart: this.state.orderCart?.concat(cartItems),
+  //       })
+  //     })
+
+  //     useToastNotification({
+  //       message: "Product in the cart!",
+  //       type: TOAST_TYPE.success,
+  //     });
+  //   }
+  // };
+  
   setUser() {
     const { getUser } = useUserStore();
     this.setState({
@@ -140,7 +162,6 @@ export class HomePage extends Component {
     this.setLinks();
     this.getProducts();
     this.addEventListener("click", this.addToCard);
-    
   }
 
   componentWillUnmount() {
