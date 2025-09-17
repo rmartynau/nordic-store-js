@@ -37,6 +37,7 @@ export class CartPage extends Component {
         ...this.state,
         data: result,
       });
+      // console.log(result);
     }
   };
 

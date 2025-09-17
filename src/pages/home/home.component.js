@@ -30,7 +30,7 @@ export class HomePage extends Component {
 
       products: [],
       orderCart: [],
-      data: [],
+      // data: [],
       isLoading: false,
       user: null,
     };
@@ -74,57 +74,26 @@ export class HomePage extends Component {
 
   addToCard = async ({ target }) => {
 
-    const addToCardBtn = target.closest(".add-to-cart");
+    const btn = target.closest('.add-to-cart');
+    if (!btn) return;
     
-    // let id = target.parentElement.parentElement.dataset.id;
-    let price = target.parentElement.parentElement.dataset.price;
-    let name = target.parentElement.parentElement.parentElement.dataset.name;
-    let img = target.parentElement.parentElement.parentElement.dataset.img;
-      
-    const cartItems = { price, name, img };
-    if (addToCardBtn) {
-      // let id = target.parentElement.parentElement.dataset.id;
-      // let id = target.dataset.id;
-      await apiService.post("/order", cartItems);
-      const { data } = await apiService.get("/order");
-      const result = mapResponseApiData(data ?? {});
-      this.setState({
-        ...this.state,
-        orderCart: this.state.orderCart?.concat(cartItems),
-        data: result,
-      })
-    
-      console.log(data);
-      
-      // await apiService.post("/order", cartItems).then(() => {
-      //   this.setState({
-      //    ...this.state,
-      //    orderCart: this.state.orderCart?.concat(cartItems),
-      //   })
-      //   console.log(this.state.orderCart);
-      // })
-      
-      useToastNotification({
-        message: "Product in the cart!",
-        type: TOAST_TYPE.success,
-      });
+    const { id, price, name, img } = btn.dataset;
+  
+    if (this.state.orderCart?.some(item => item.id === id)) {
+      useToastNotification({ 
+        message: 'This product is already in the cart :)', 
+        type: TOAST_TYPE.info });
+      return;
     }
-  };
 
-  async init() {
-    try {
-      const { getUser } = useUserStore();
-      const { data } = (await apiService.get("/order"));
-      const result = mapResponseApiData(data);
-      this.setState({
-        ...this.state,
-        user: getUser(),
-        data: result,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+    await apiService.patch(`/order/${id}`, { id, price, name, img }).then(() => {
+       this.setState({
+       ...this.state,
+       orderCart: this.state.orderCart?.concat({ id, price, name, img }),
+        });
+      })
+      useToastNotification({ message: 'Product in the cart!', type: TOAST_TYPE.success });
+    };
 
   // addToCard = (e) => {
   //   if (e.target.closest(".add-to-cart")) {
@@ -134,13 +103,13 @@ export class HomePage extends Component {
   //     let name = e.target.parentElement.parentElement.parentElement.dataset.name;
   //     let img = e.target.parentElement.parentElement.parentElement.dataset.img;
       
-  //     const cartItems = { price, name, img };
+  //     const cartItems = { id, price, name, img };
 
-  //    apiService.post("/order", cartItems).then(() => {
-  //       this.setState({
-  //        ...this.state,
-  //        orderCart: this.state.orderCart?.concat(cartItems),
-  //       })
+  //     apiService.patch(`/order/${id}`, cartItems).then(() => {
+  //      this.setState({
+  //      ...this.state,
+  //      orderCart: this.state.orderCart?.concat(cartItems),
+  //       });
   //     })
 
   //     useToastNotification({
@@ -149,6 +118,100 @@ export class HomePage extends Component {
   //     });
   //   }
   // };
+
+  // addToCard = async ({ target }) => {
+
+  //   const btn = target.closest('.add-to-cart');
+  //   if (!btn) return;
+    
+  //   const { id, price, name, img } = btn.dataset;
+  //   if (this.state.orderCart?.some(item => item.id === id)) {
+  //     useToastNotification({ 
+  //       message: 'This product is already in the cart.', 
+  //       type: TOAST_TYPE.info });
+  //     return;
+  //   }
+
+  //   await apiService.patch(`/order/${id}`, { id, price, name, img });
+    
+  //   this.setState(prev => ({ orderCart: [...(prev.orderCart || []), { id, price, name, img }] }));
+  //   this.setState(prev => ({   ...prev,   orderCart: [...(prev.orderCart || []), { id, price, name, img }] }));
+    
+  //   useToastNotification({ message: 'Product in the cart!', type: TOAST_TYPE.success });
+
+  //   const addToCardBtn = target.closest(".add-to-cart");
+    
+  //   let id = target.parentElement.parentElement.dataset.id;
+  //   let price = target.parentElement.parentElement.dataset.price;
+  //   let name = target.parentElement.parentElement.parentElement.dataset.name;
+  //   let img = target.parentElement.parentElement.parentElement.dataset.img;
+      
+  //   const cartItems = { price, name, img };
+  //   if (addToCardBtn) {
+  //     let id = target.parentElement.parentElement.dataset.id;
+  //     await apiService.post("/order", cartItems);
+  //     const { data } = await apiService.get("/order");
+  //     const result = mapResponseApiData(data ?? {});
+  //     this.setState({
+  //       ...this.state,
+  //       orderCart: this.state.orderCart?.concat(cartItems),
+  //       data: result,
+  //     })
+  //     console.log(result);
+      
+  //     apiService.get('/order').then(({ data }) => {
+  //     console.log(Object.values(data));
+  //     })
+      
+  //     await apiService.post("/order", cartItems).then(() => {
+  //       this.setState({
+  //        ...this.state,
+  //        orderCart: this.state.orderCart?.concat(cartItems),
+  //       })
+  //       console.log(this.state.orderCart);
+  //     })
+      
+  //     useToastNotification({
+  //       message: "Product in the cart!",
+  //       type: TOAST_TYPE.success,
+  //     });
+  //   }
+  // };
+
+  // addToCard = (e) => {
+  //   if (e.target.closest(".add-to-cart")) {
+  //     let price = e.target.parentElement.parentElement.dataset.price;
+  //     let name = e.target.parentElement.parentElement.parentElement.dataset.name;
+  //     let img = e.target.parentElement.parentElement.parentElement.dataset.img;
+      
+  //     const cartItems = { price, name, img };
+  //     apiService.post("/order", cartItems).then(() => {
+  //       this.setState({
+  //         ...this.state,
+  //         orderCart: this.state.orderCart?.concat(cartItems),
+  //       });
+  //     })
+  //     useToastNotification({
+  //       message: "Product in the cart!",
+  //       type: TOAST_TYPE.success,
+  //     });
+  //   }
+  // };
+
+  // async init() {
+  //   try {
+  //     const { getUser } = useUserStore();
+  //     const { data } = (await apiService.get("/order"));
+  //     const result = mapResponseApiData(data);
+  //     this.setState({
+  //       ...this.state,
+  //       user: getUser(),
+  //       data: result,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
   
   setUser() {
     const { getUser } = useUserStore();
@@ -166,7 +229,6 @@ export class HomePage extends Component {
 
   componentWillUnmount() {
     this.removeEventListener("click", this.addToCard);
-    this.getProducts();
   }
 }
 
