@@ -37,27 +37,8 @@ export class CartPage extends Component {
         ...this.state,
         data: result,
       });
-      // console.log(result);
     }
   };
-
-  // onClick = ({ target }) => {
-  //   const { getUser } = useUserStore()
-  //   if (target.closest(".clear")) {
-  //     this.toggleIsLoading()
-  //     apiService.delete("/order").then(() => {
-  //       apiService.get("/order").then(({ data }) => {
-  //         this.setState({
-  //           ...this.state,
-  //           cart: data,
-  //           user: getUser()
-  //         });
-  //       }).finally(() => {
-  //         this.toggleIsLoading()
-  //       })
-  //     });
-  //   }
-  // };
 
   async init() {
     try {
@@ -74,34 +55,13 @@ export class CartPage extends Component {
     }
   }
 
-  // init = async() => {
-  //   this.toggleIsLoading()
-  //   try {
-  //     const { getUser } = useUserStore();
-  //     const { data } = await apiService.get("/order");
-  //     const result = mapResponseApiData(data);
-  //     this.setState({
-  //       ...this.state,
-  //       user: getUser(),
-  //       cart: result,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     this.toggleIsLoading()
-  //   }
-  // }
-
   componentDidMount() {
     this.init();
-    // this.getProducts();
     this.addEventListener("click", this.deleteItem);
-    // this.addEventListener("click", this.onClick);
   }
 
   componentWillUnmount() {
     this.removeEventListener("click", this.deleteItem);
-    // this.removeEventListener("click", this.onClick);
   }
 }
 
