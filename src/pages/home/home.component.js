@@ -5,6 +5,9 @@ import { apiService } from '../../services/Api';
 
 import "../../components/router-link/router-link.component";
 
+// import Swiper from "swiper";
+// import { Navigation, Pagination, Autoplay } from "swiper/modules";
+// import "swiper/css";
 import { useUserStore } from "../../hooks/useUserStore";
 import { useToastNotification } from "../../hooks/useToastNotification";
 import { TOAST_TYPE } from "../../constants/toast";
@@ -58,6 +61,29 @@ export class HomePage extends Component {
       }
   };
 
+  // initSliders() {
+  //   new Swiper(".header-banner .swiper", {
+  //     modules: [Navigation, Pagination, Autoplay],
+      
+  //     speed: 500,
+  //     autoplay: {
+  //       delay: 5000,
+  //       disableOnInteraction: false,
+  //     },
+  //     spaceBetween: 15,
+  //     watchOverflow: true,
+      
+  //   });
+
+  //   new Swiper(".header-slider", {
+  //     modules: [Pagination],
+  //     slidesPerView: 1,
+  //     spaceBetween: 10,
+  //     watchOverflow: true,
+  //     autoHeight: true,
+  //   });
+  // }
+
   getProducts = () => {
     apiService
     .get("/products")
@@ -95,6 +121,7 @@ export class HomePage extends Component {
 
   componentDidMount() {
     this.setLinks();
+    // this.initSliders();
     this.getProducts();
     this.addEventListener("click", this.addToCard);
   }
