@@ -10,6 +10,7 @@ export const useCartStorage = () => {
     const items = getAllItems().filter((item) => item.id != id);
     storageService.setItem(STORAGE_KEYS.cart, items.concat(data));
     changePriceCount();
+    // changeCartCount();
   };
 
   const removeItem = (id) => {
@@ -18,13 +19,14 @@ export const useCartStorage = () => {
     changePriceCount();
   };
 
-  // const changePriceCount = () => {
-  //   const cartElem = getAllItems();
-  //   let totalPrice = 0;
-  //   cartElem.forEach((item) => {
-  //     totalPrice = Number(item.price) + totalPrice;
-  //   });
-  // };
+  const changePriceCount = () => {
+    const cartElem = getAllItems();
+    let totalPrice = 0;
+    cartElem.forEach((item) => {
+      totalPrice = Number(item.price) + totalPrice;
+    });
+    document.querySelector(".total-price").innerHTML = totalPrice;
+  };
 
   // const changeCartCount = () => {
   //   const cartElem = getAllItems();

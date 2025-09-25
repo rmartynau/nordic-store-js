@@ -97,7 +97,6 @@ export class HomePage extends Component {
     useToastNotification({ message: 'Product In Cart!', type: TOAST_TYPE.success });
   };
 
-
   componentDidMount() {
     this.setLinks();
     this.getProducts();

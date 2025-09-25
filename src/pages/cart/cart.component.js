@@ -47,8 +47,8 @@ export class CartPage extends Component {
       const result = mapResponseApiData(data);
       this.setState({
         ...this.state,
-        user: getUser(),
         data: result,
+        user: getUser()
       });
     } catch (error) {
       console.log(error);
